@@ -108,7 +108,7 @@ function rColor () {
     var c3 = Math.floor(Math.random() * 256);
     var randomColor = "rgb(" + c1 + "," + c2 + "," + c3 + ")";
    
-    return document.body.style.backgroundColor = randomColor;
+ 	document.body.style.backgroundColor = randomColor;
 }
 
 /***
@@ -150,7 +150,7 @@ function printQuote(){
 
 }
 
-window.setInterval(printQuote,2000)
+window.setInterval(printQuote,10000)
 /***
  * click event listener for the print quote button
  * DO NOT CHANGE THE CODE BELOW!!
