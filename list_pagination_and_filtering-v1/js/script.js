@@ -12,7 +12,7 @@ FSJS project 2 - List Filter and Pagination
 const pageListItems = 10;
 const pageDiv = document.querySelector('.page');
 const pageHeader =document.querySelector('.page-header');
-const listItems = document.querySelector('li');
+const listItems = document.querySelectorAll('li');
 const paginationDiv = document.createElement('div');
 paginationDiv.className = 'pagination';
 pageDiv.appendChild(paginationDiv);
@@ -45,7 +45,7 @@ function showPage(index, listItem){
  * step 1: get the number of pages
  * step2: create a list element that contain all the lins and page numbers
  * step 3: add the numbers of pages to the link created for page navigation
- * step 4: add a click event lsitener 
+ * step 4: add a click event listener 
 ***/
 
 function appendPageLinks(listItem){
@@ -61,7 +61,7 @@ function appendPageLinks(listItem){
       li.appendChild(pagelink);
 
       pagelink.href = '#';
-      pagelink.textContent = 1;
+      pagelink.textContent = i;
 
       if(pagelink.textContent == 1){
          pagelink.className = 'active';
@@ -77,11 +77,83 @@ function appendPageLinks(listItem){
    }
 
 }
+// EXCEEDS EXPECTATION
+/**
+ * filterStudent function matches the input field value with that of the student's names
+ *  get the value of the input field and the list of all students
+ *  Comparing the list of students and the value of the
+   input field all in lowercase then transverse to the parentNode to get all the details
+   of the student and adding them to the empty array if they match. If they don't match,
+   the error message the no pagination should show.
+ * If there is data in the array, it should show the details,
+   paginated the page(s), make the first page active, no error
+   message should be seen, no style to the pagination.
+ * 
+ * ** */
+// filtered students functions
+
+const removeData = document.createElement('div');
+paginationDiv.appendChild(removeData);
+
+function filterStudent(inputV) {
+   const searchContent = inputV.value;
+   const studentList = document.getElementsByTagName('h3');
+   const dataMatched = [];
+   paginationDiv.innerHTML = '';
+   
+   listItems.forEach(listItem => {
+      listItem.style.display = 'none';
+   });
+
+   for(let j = 0; j < studentList.length; j++){
+      if(studentList[j].textContent.toLowerCase().includes(searchContent.toLowerCase())){
+         const studentDetails = studentList[j].parentNode.parentNode;
+         dataMatched.push(studentDetails)
+      } else{
+         removeData.innerHTML = `<p> no student found in your search criteria </p>`
+         paginationDiv.style.display  = 'none';
+
+      }
+   }
+   
+   if (dataMatched.length > 0){
+      showPage(1,dataMatched);
+      appendPageLinks(dataMatched);
+      document.querySelector('a').className = 'active';
+      paginationDiv.style.display = '';
+      removeData.innerHTML = '';
+   }
+}
+
+// search student function
+/***
+in the search function , search box is created , input field and buttons are addded to the search box
+a click event listener added to the button 
+also input event listener added to the input  
+
+
+***/
+function searchStudent() {
+   const searchDiv = document.createElement('div');
+   searchDiv.className = 'student-search';
+   pageHeader.appendChild(searchDiv);
+
+
+   const inputField = document.createElement('input');
+   inputField.placeholder = 'search.....'
+   searchDiv.appendChild(inputField);
+
+   const button = document.createElement('button');
+   button.textContent = 'Search';
+   searchDiv.appendChild(button);
+
+   button.addEventListener('click', () => filterStudent(inputField))
+   inputField.addEventListener('input', () => filterStudent(inputField))
+}
 
 
 
 showPage(1, listItems);
 appendPageLinks(listItems);
+searchStudent();
 
-
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
